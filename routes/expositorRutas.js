@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const controlador = require('../controllers/expositorControlador');
-const middleware = require('../controllers/expositorMiddleware');
+const middleware = require('../middlewares/autorizacionMiddleware');
 
 router.post('/registrar', controlador.registrar);
-router.post('/listar-todos', middleware.verificarAdministrador, controlador.obtenerTodos);
+router.get('/listar-todos', middleware.verificarAdministrador, controlador.obtenerTodos);
 
 module.exports = router;
