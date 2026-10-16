@@ -4,6 +4,6 @@ const controlador = require('../controllers/expositorControlador');
 const middleware = require('../middlewares/autorizacionMiddleware');
 
 router.post('/registrar', controlador.registrar);
-router.get('/listar-todos', middleware.verificarAdministrador, controlador.obtenerTodos);
+//router.get('/listar-todos', middleware.verificarAdministrador, controlador.obtenerTodos);
 
 module.exports = router;
