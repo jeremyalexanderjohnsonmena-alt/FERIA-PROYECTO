@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Expositor / Administrador - Feria Empresarial</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .auth-card {
+            max-width: 440px;
+            margin: 3rem auto;
+            background: white;
+            padding: 2.2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: -2px;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand">
+                <span>Feria Empresarial</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/index.html">← Volver al Catálogo</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="auth-card">
+            <div class="tabs">
+                <button class="tab active" id="tab-login" onclick="cambiarTab('login')">Iniciar Sesión</button>
+                <button class="tab" id="tab-registro" onclick="cambiarTab('registro')">Registrarse</button>
+            </div>
+
+            <div id="mensaje-alerta"></div>
+
+            <!-- Formulario de Inicio de Sesión -->
+            <form id="form-login" class="form-section active" onsubmit="manejarLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" class="form-control" required placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-pass">Contraseña</label>
+                    <input type="password" id="login-pass" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar al Sistema</button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="form-registro" class="form-section" onsubmit="manejarRegistro(event)">
+                <div class="form-group">
+                    <label class="form-label" for="reg-nombre">Nombre Completo</label>
+                    <input type="text" id="reg-nombre" class="form-control" required placeholder="Tu Nombre">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Correo Electrónico</label>
+                    <input type="email" id="reg-email" class="form-control" required placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-pass">Contraseña (Mínimo 6 caracteres)</label>
+                    <input type="password" id="reg-pass" class="form-control" required placeholder="••••••••" minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-rol">Tipo de Cuenta (Rol)</label>
+                    <select id="reg-rol" class="form-control">
+                        <option value="expositor">Expositor (Inscribir emprendimiento y productos)</option>
+                        <option value="administrador">Administrador (Avalar y gestionar toda la feria)</option>
+                    </select>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 1rem;">
+                    * Los clientes no requieren crear cuenta ni iniciar sesión.
+                </p>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Crear Cuenta</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script>
+        function cambiarTab(tipo) {
+            document.getElementById('tab-login').classList.toggle('active', tipo === 'login');
+            document.getElementById('tab-registro').classList.toggle('active', tipo === 'registro');
+            document.getElementById('form-login').classList.toggle('active', tipo === 'login');
+            document.getElementById('form-registro').classList.toggle('active', tipo === 'registro');
+            document.getElementById('mensaje-alerta').innerHTML = '';
+        }
+
+        async function manejarLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pass').value;
+            const alerta = document.getElementById('mensaje-alerta');
+            alerta.innerHTML = '<p style="color:var(--text-muted);">Iniciando sesión...</p>';
+
+            try {
+                const res = await api.login({ email, password });
+                const { token, usuario } = res.datos;
+                
+                authStorage.setToken(token);
+                authStorage.setUsuario(usuario);
+
+                alerta.innerHTML = '<div class="alert alert-success">¡Inicio exitoso! Redirigiendo...</div>';
+                setTimeout(() => {
+                    if (usuario.rol === 'administrador') {
+                        window.location.href = '/panel-admin.html';
+                    } else {
+                        window.location.href = '/panel-expositor.html';
+                    }
+                }, 600);
+            } catch (err) {
+                alerta.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+            }
+        }
+
+        async function manejarRegistro(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('reg-nombre').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value;
+            const rol = document.getElementById('reg-rol').value;
+            const alerta = document.getElementById('mensaje-alerta');
+            alerta.innerHTML = '<p style="color:var(--text-muted);">Registrando usuario...</p>';
+
+            try {
+                await api.registro({ nombre, email, password, rol });
+                alerta.innerHTML = `<div class="alert alert-success">Registro exitoso como ${rol}. Ya puedes iniciar sesión.</div>`;
+                setTimeout(() => {
+                    cambiarTab('login');
+                    document.getElementById('login-email').value = email;
+                }, 1500);
+            } catch (err) {
+                alerta.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

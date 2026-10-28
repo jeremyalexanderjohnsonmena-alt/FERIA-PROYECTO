@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Expositor - Feria Empresarial</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand">
+                <span>Feria Empresarial</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <!-- api.js -->
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+            <div>
+                <h1 style="font-size: 1.8rem; color:var(--dark);">Panel del Expositor</h1>
+                <p style="color:var(--text-muted);">Administra tu emprendimiento y gestiona tu catálogo de productos.</p>
+            </div>
+            <button class="btn btn-primary" id="btn-inscribir" onclick="abrirModalEmprendimiento()" style="display:none;">
+                + Inscribir Mi Emprendimiento
+            </button>
+        </div>
+
+        <div id="mensaje-estado"></div>
+
+        <!-- Sección: Mi Emprendimiento -->
+        <section id="seccion-emprendimiento" style="margin-bottom: 2.5rem;">
+            <!-- Contenido generado por expositor.js -->
+        </section>
+
+        <!-- Sección: Gestión de Catálogo de Productos -->
+        <section id="seccion-productos" style="display: none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.4rem; color:var(--dark);">Catálogo de Productos y Servicios</h2>
+                <button class="btn btn-success btn-sm" onclick="abrirModalProducto()">
+                    + Agregar Producto
+                </button>
+            </div>
+            <div class="grid-cards" id="contenedor-mis-productos">
+                <!-- Productos del expositor -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Registrar/Editar Emprendimiento -->
+    <div class="modal-overlay" id="modal-emp">
+        <div class="modal">
+            <button class="modal-close" onclick="cerrarModalEmp()">&times;</button>
+            <h3 id="modal-emp-titulo" style="margin-bottom: 1rem; color:var(--dark);">Inscribir Emprendimiento</h3>
+            <form id="form-emp" onsubmit="guardarEmprendimiento(event)">
+                <input type="hidden" id="emp-id">
+                <div class="form-group">
+                    <label class="form-label" for="emp-nombre">Nombre del Emprendimiento *</label>
+                    <input type="text" id="emp-nombre" class="form-control" required placeholder="Ej: Artesanías El Sol">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="emp-categoria">Categoría * (Máx. 5 cupos por categoría)</label>
+                    <select id="emp-categoria" class="form-control" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Gastronomía">Gastronomía</option>
+                        <option value="Artesanías">Artesanías</option>
+                        <option value="Moda y Calzado">Moda y Calzado</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Belleza y Cuidado Personal">Belleza y Cuidado Personal</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="emp-descripcion">Descripción *</label>
+                    <textarea id="emp-descripcion" class="form-control" rows="3" required placeholder="Cuéntanos sobre tu negocio, qué ofreces y tu propuesta de valor..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Información</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Registrar/Editar Producto -->
+    <div class="modal-overlay" id="modal-prod">
+        <div class="modal">
+            <button class="modal-close" onclick="cerrarModalProd()">&times;</button>
+            <h3 id="modal-prod-titulo" style="margin-bottom: 1rem; color:var(--dark);">Agregar Producto</h3>
+            <form id="form-prod" onsubmit="guardarProducto(event)">
+                <input type="hidden" id="prod-id">
+                <div class="form-group">
+                    <label class="form-label" for="prod-nombre">Nombre del Producto / Servicio *</label>
+                    <input type="text" id="prod-nombre" class="form-control" required placeholder="Ej: Café Especial 500g">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="prod-precio">Precio ($) *</label>
+                    <input type="number" id="prod-precio" class="form-control" required min="0" step="0.01" placeholder="Ej: 25000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="prod-tipo">Tipo</label>
+                    <select id="prod-tipo" class="form-control">
+                        <option value="producto">Producto</option>
+                        <option value="servicio">Servicio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="prod-imagen">URL de la Imagen (opcional)</label>
+                    <input type="url" id="prod-imagen" class="form-control" placeholder="https://ejemplo.com/foto.jpg">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="prod-descripcion">Descripción</label>
+                    <textarea id="prod-descripcion" class="form-control" rows="2" placeholder="Detalles de materiales, presentación o entrega..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%;">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/expositor.js"></script>
+</body>
+</html>

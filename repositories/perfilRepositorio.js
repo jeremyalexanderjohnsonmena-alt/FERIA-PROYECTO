@@ -1,15 +1,28 @@
 const { cliente_supabase } = require('../config/supabase');
 
 const perfilRepositorio = {
-    obtenerPerfilPorId: async function(id_usuario) {
+    crearPerfil: async function({ id, nombre, email, rol }) {
         const { data, error } = await cliente_supabase
             .from('perfiles')
-            .select('rol')
-            .eq('id_usuario', id_usuario)
+            .insert([{ id, nombre, email, rol: rol || 'expositor' }])
+            .select()
             .single();
 
         if (error) {
-            throw new Error('No se encontró el perfil del usuario');
+            throw new Error('Error al registrar perfil: ' + error.message);
+        }
+        return data;
+    },
+
+    obtenerPerfilPorId: async function(id_usuario) {
+        const { data, error } = await cliente_supabase
+            .from('perfiles')
+            .select('*')
+            .eq('id', id_usuario)
+            .single();
+
+        if (error) {
+            return null;
         }
         return data;
     }
