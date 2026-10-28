@@ -38,5 +38,3 @@ app.listen(puerto, function () {
     console.log('--- Servidor de la Feria Iniciado ---');
     console.log('Escuchando en: http://localhost:' + puerto);
 });
-
-module.exports = app;
