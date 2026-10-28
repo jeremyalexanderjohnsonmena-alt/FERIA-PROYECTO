@@ -34,7 +34,13 @@ app.use((req, res, next) => {
 
 const puerto = process.env.PUERTO_SERVIDOR || 3000;
 
-app.listen(puerto, function () {
-    console.log('--- Servidor de la Feria Iniciado ---');
-    console.log('Escuchando en: http://localhost:' + puerto);
-});
+// Solo escucha el puerto si estás ejecutando en local, no en Vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(puerto, function () {
+        console.log('--- Servidor de la Feria Iniciado ---');
+        console.log('Escuchando en: http://localhost:' + puerto);
+    });
+}
+
+// Exportar app para que Vercel pueda ejecutarla
+module.exports = app;
