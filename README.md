@@ -1,9 +1,10 @@
-***Feria de Proyectos de Emmprendimiento***
+***Feria de Proyectos de Emmprendimiento***  
 
-**Desarrolladores:**
-Javier Eduardo Pino Hernandez
-Jeremy Alexander Johnson Mena
+**Desarrolladores:**  
+Javier Eduardo Pino Hernandez  
+Jeremy Alexander Johnson Mena  
 
-**Enlace del Sitio Web:**
+**Enlace del Sitio Web:**  
     • **Deploy:** https://feria-proyecto-usbctg.vercel.app
+
 **Tecnologías:** NodeJS y PostgreSQL(Supabase)
