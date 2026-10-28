@@ -1,7 +1,6 @@
 const { cliente_supabase } = require('../config/supabase');
 
 const emprendimientoRepositorio = {
-    // Listar aprobados para clientes (público)
     obtenerAprobados: async function() {
         const { data, error } = await cliente_supabase
             .from('emprendimientos')
@@ -14,7 +13,7 @@ const emprendimientoRepositorio = {
         return data;
     },
 
-    // Listar todos para el Administrador
+    
     obtenerTodos: async function() {
         const { data, error } = await cliente_supabase
             .from('emprendimientos')

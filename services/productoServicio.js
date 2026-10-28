@@ -2,7 +2,6 @@ const productoRepositorio = require('../repositories/productoRepositorio');
 const emprendimientoRepositorio = require('../repositories/emprendimientoRepositorio');
 
 const productoServicio = {
-    // 1. Cliente público: ver catálogo de un emprendimiento
     listarPorEmprendimiento: async function(emprendimiento_id) {
         const emprendimiento = await emprendimientoRepositorio.obtenerPorId(emprendimiento_id);
         if (!emprendimiento) {
@@ -11,7 +10,6 @@ const productoServicio = {
         return await productoRepositorio.obtenerPorEmprendimiento(emprendimiento_id);
     },
 
-    // 2. Expositor avalado / Admin: agregar producto/servicio
     crear: async function(datos, usuario) {
         const { emprendimiento_id, nombre, descripcion, precio, imagenes, tipo } = datos;
 
@@ -24,7 +22,6 @@ const productoServicio = {
             throw new Error('El emprendimiento especificado no existe');
         }
 
-        // Si es expositor, validar que sea dueño y esté aprobado
         if (usuario.rol !== 'administrador') {
             if (emprendimiento.usuario_id !== usuario.id) {
                 throw new Error('No puedes agregar productos a un emprendimiento que no te pertenece');
@@ -44,7 +41,6 @@ const productoServicio = {
         });
     },
 
-    // 3. Modificar producto/servicio
     actualizar: async function(id, datos, usuario) {
         const producto = await productoRepositorio.obtenerPorId(id);
         if (!producto) {
@@ -64,7 +60,6 @@ const productoServicio = {
         return await productoRepositorio.actualizar(id, datos);
     },
 
-    // 4. Eliminar producto/servicio
     eliminar: async function(id, usuario) {
         const producto = await productoRepositorio.obtenerPorId(id);
         if (!producto) {

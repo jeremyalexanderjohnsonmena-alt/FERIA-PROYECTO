@@ -9,7 +9,6 @@ const authServicio = {
 
         const rolFinal = rol === 'administrador' ? 'administrador' : 'expositor';
 
-        // 1. Crear usuario en Supabase Auth incluyendo los metadatos (nombre y rol)
         const { data: authData, error: authError } = await cliente_supabase.auth.signUp({
             email,
             password,
@@ -29,7 +28,6 @@ const authServicio = {
             throw new Error('No se pudo crear el usuario en el sistema de autenticación');
         }
 
-        // 2. Guardar perfil en la tabla 'perfiles'
         await perfilRepositorio.crearPerfil({
             id: authData.user.id,
             nombre: nombre,

@@ -1,7 +1,7 @@
 const emprendimientoServicio = require('../services/emprendimientoServicio');
 
 const emprendimientoControlador = {
-    // Público (Cliente)
+    
     listarAprobados: async function(solicitud, respuesta) {
         try {
             const emprendimientos = await emprendimientoServicio.listarAprobados();
@@ -14,7 +14,7 @@ const emprendimientoControlador = {
         }
     },
 
-    // Administrador
+    
     listarTodos: async function(solicitud, respuesta) {
         try {
             const emprendimientos = await emprendimientoServicio.listarTodos();
@@ -51,7 +51,7 @@ const emprendimientoControlador = {
         }
     },
 
-    // Expositor / Admin
+    
     registrar: async function(solicitud, respuesta) {
         try {
             const { nombre_emprendimiento, descripcion, categoria } = solicitud.body;
@@ -77,7 +77,7 @@ const emprendimientoControlador = {
         }
     },
 
-    // Administrador: Avalar / Rechazar
+    
     avalar: async function(solicitud, respuesta) {
         try {
             const estado_aval = solicitud.body.estado_aval || solicitud.body.estado; // 'aprobado' | 'rechazado' | 'pendiente'
@@ -92,7 +92,7 @@ const emprendimientoControlador = {
         }
     },
 
-    // Admin o Dueño
+   
     actualizar: async function(solicitud, respuesta) {
         try {
             const actualizado = await emprendimientoServicio.actualizar(
@@ -110,7 +110,7 @@ const emprendimientoControlador = {
         }
     },
 
-    // Administrador
+    
     eliminar: async function(solicitud, respuesta) {
         try {
             await emprendimientoServicio.eliminar(solicitud.params.id);

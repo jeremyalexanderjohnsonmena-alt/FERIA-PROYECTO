@@ -3,7 +3,7 @@ const perfilRepositorio = require('../repositories/perfilRepositorio');
 const emprendimientoRepositorio = require('../repositories/emprendimientoRepositorio');
 
 const autorizacionMiddleware = {
-    // 1. Verifica token JWT de Supabase
+   
     autenticar: async function(solicitud, respuesta, siguiente) {
         try {
             const authHeader = solicitud.headers.authorization;
@@ -22,7 +22,7 @@ const autorizacionMiddleware = {
                 });
             }
 
-            // Obtener perfil o fallback a user_metadata
+            
             const perfil = await perfilRepositorio.obtenerPerfilPorId(user.id);
             const metadata = user.user_metadata || {};
             const rolFinal = perfil?.rol || metadata.rol || 'expositor';
@@ -41,7 +41,7 @@ const autorizacionMiddleware = {
         }
     },
 
-    // 2. Requiere rol 'administrador'
+    
     verificarAdministrador: function(solicitud, respuesta, siguiente) {
         if (!solicitud.usuario || solicitud.usuario.rol !== 'administrador') {
             return respuesta.status(403).json({
@@ -51,7 +51,7 @@ const autorizacionMiddleware = {
         siguiente();
     },
 
-    // 3. Requiere rol 'expositor' o 'administrador'
+    
     verificarExpositor: function(solicitud, respuesta, siguiente) {
         if (!solicitud.usuario || (solicitud.usuario.rol !== 'expositor' && solicitud.usuario.rol !== 'administrador')) {
             return respuesta.status(403).json({
@@ -61,10 +61,10 @@ const autorizacionMiddleware = {
         siguiente();
     },
 
-    // 4. Verifica que el expositor esté avalado (para agregar o gestionar productos)
+    
     verificarExpositorAvalado: async function(solicitud, respuesta, siguiente) {
         try {
-            // El administrador siempre tiene pase libre
+           
             if (solicitud.usuario.rol === 'administrador') {
                 return siguiente();
             }
